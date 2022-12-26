@@ -6,7 +6,6 @@
 
 import React from "react";
 import { TETROMINOS } from "../utils/tetrominos";
-import { randomTetromino } from "../utils/tetrominos";
 import StyledCell from "./styles/StyledCell";
 
 class Cell extends React.Component{

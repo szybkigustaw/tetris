@@ -6,6 +6,7 @@
 import React from "react";
 import Stage from "./Stage";
 import Display from "../components/Display";
+import DisplayHold from "../components/DisplayHold";
 import StartButton from "../components/StartButton";
 import { randomTetromino, TETROMINOS } from "../utils/tetrominos";
 import { StyledTetris, StyledTetrisWrapper } from "./styles/StyledTetris";
@@ -20,6 +21,8 @@ class Tetris extends React.Component{
                 collided: false
             },
             stage: this.createStage(),
+            held_tetromino: null,
+            can_be_switched: true,
             dropTime: null,
             gameOver: false,
             rowsCleared: 0,
@@ -38,6 +41,7 @@ class Tetris extends React.Component{
         this.resetPlayer = this.resetPlayer.bind(this);
         this.clearRows = this.clearRows.bind(this);
         this.checkLevel = this.checkLevel.bind(this);
+        this.switchHold = this.switchHold.bind(this);
         this.STAGE_HEIGHT = 20
         this.STAGE_WIDTH = 10
         this.gameInterval = null;
@@ -96,6 +100,8 @@ class Tetris extends React.Component{
             this.setState(prevState => ({
                 player: this.state.player,
                 stage: clearRowsRes[0],
+                held_tetromino: prevState.held_tetromino,
+                can_be_switched: true,
                 dropTime: prevState.dropTime,
                 gameOver: false,
                 rowsCleared: prevState.rowsCleared + clearRowsRes[1],
@@ -110,6 +116,8 @@ class Tetris extends React.Component{
             this.setState(prevState => ({
                     player: this.state.player,
                     stage: newStage,
+                    held_tetromino: prevState.held_tetromino,
+                    can_be_switched: prevState.can_be_switched,
                     dropTime: prevState.dropTime,
                     gameOver: false,
                     rowsCleared: prevState.rowsCleared,
@@ -189,6 +197,60 @@ class Tetris extends React.Component{
         return [level, req];
     }
 
+    switchHold(player, stage){
+        if(!this.state.gameOver){
+            if(this.state.held_tetromino === null){
+                this.setState(prevState => ({
+                    player: this.resetPlayer(),
+                    stage: prevState.stage,
+                    held_tetromino: prevState.player.tetromino,
+                    can_be_switched: prevState.can_be_switched,
+                    dropTime: prevState.dropTime,
+                    gameOver: false,
+                    rowsCleared: prevState.rowsCleared,
+                    points: prevState.points,
+                    level: prevState.level,
+                    required_to_level: prevState.required_to_level
+                }))
+            } else if(this.state.can_be_switched){
+                for(let y = 0; y < this.state.held_tetromino.length; y++){
+                    for(let x = 0; x < this.state.held_tetromino[y].length; x++){
+                        if(this.state.held_tetromino[y][x] !== '0'){
+                            if(
+                                !stage[y + player.pos.y] ||
+                                !stage[y + player.pos.y][x + player.pos.x] ||
+                                stage[y + player.pos.y][x + player.pos.x][1] !== "clear"
+                            ){
+                                return;
+                            } else {
+                                const cur_held_tetromino = this.state.held_tetromino;
+                                const cur_tetromino = player.tetromino;
+                                this.setState(prevState => ({
+                                    player: {
+                                        pos: prevState.player.pos,
+                                        tetromino: cur_held_tetromino,
+                                        collided: prevState.player.collided
+                                    },
+                                    stage: prevState.stage,
+                                    held_tetromino: cur_tetromino,
+                                    can_be_switched: false,
+                                    dropTime: prevState.dropTime,
+                                    gameOver: false,
+                                    rowsCleared: prevState.rowsCleared,
+                                    points: prevState.points,
+                                    level: prevState.level,
+                                    required_to_level: prevState.required_to_level
+                                }))
+                            }
+                        }
+                    }
+                }
+            } else {
+               return; 
+            }
+        }
+    }
+
     rotate(tetromino, dir){
         //
         const rotated_tetromino = tetromino.map((_, index) => (
@@ -232,6 +294,7 @@ class Tetris extends React.Component{
         this.setState(prevState => ({
             player: player_copy,
             stage: prevState.stage,
+            held_tetromino: prevState.held_tetromino,
             dropTime: prevState.dropTime,
             gameOver: prevState.gameOver,
             rowsCleared: prevState.rowsCleared,
@@ -246,6 +309,7 @@ class Tetris extends React.Component{
             if(!this.checkCollision(this.state.player, this.state.stage, {x: dir, y: 0})) {
                 this.setState(prevState => ({
                     stage: prevState.stage,
+                    held_tetromino: prevState.held_tetromino,
                     dropTime: prevState.dropTime,
                     gameOver: prevState.gameOver,
                     player: {
@@ -267,6 +331,7 @@ class Tetris extends React.Component{
         if(!this.checkCollision(this.state.player, this.state.stage, {x: 0, y: 1})){
             this.setState(prevState => ({
                     stage: prevState.stage,
+                    held_tetromino: prevState.held_tetromino,
                     dropTime: prevState.dropTime,
                     gameOver: prevState.gameOver,
                     player: {
@@ -285,6 +350,7 @@ class Tetris extends React.Component{
                     this.setState(prevState => ({
                         player: prevState.player,
                         stage: prevState.stage,
+                        held_tetromino: prevState.held_tetromino,
                         dropTime: prevState.dropTime,
                         gameOver: true,
                         rowsCleared: prevState.rowsCleared,
@@ -295,6 +361,7 @@ class Tetris extends React.Component{
                 } else {
                     this.setState(prevState => ({
                         stage: prevState.stage,
+                        held_tetromino: prevState.held_tetromino,
                         dropTime: prevState.dropTime,
                         gameOver: prevState.gameOver,
                         player: {
@@ -320,6 +387,7 @@ class Tetris extends React.Component{
                 collided: false
             },
             stage: this.createStage(),
+            held_tetromino: null,
             dropTime: null,
             gameOver: false,
             rowsCleared: 0,
@@ -338,6 +406,7 @@ class Tetris extends React.Component{
                 collided: false
             },
             stage: prevState.stage,
+            held_tetromino: prevState.held_tetromino,
             dropTime: prevState.dropTime,
             gameOver: false,
             rowsCleared: prevState.rowsCleared,
@@ -349,20 +418,27 @@ class Tetris extends React.Component{
 
     registerKeyPresses(e){
         if(!this.state.gameOver){
-        switch(e.keyCode){
-            case 37:{
+        switch(e.code){
+            case "ControlLeft":{
+                this.switchHold(this.state.player, this.state.stage);
+            } break;
+            case "ArrowLeft":{
                 this.move(-1);
             } break;
 
-            case 38:{
+            case "ArrowUp":{
                 this.rotatePlayer(1);
             } break;
             
-            case 39:{
+            case "ShiftLeft":{
+                this.rotatePlayer(-1);
+            }  break;
+
+            case "ArrowRight":{
                 this.move(1);
             } break;
 
-            case 40:{
+            case "ArrowDown":{
                 this.drop();
             } break;
         }
@@ -375,6 +451,7 @@ class Tetris extends React.Component{
         //this.rerender_count++;
         //console.log(this.rerender_count);
         //console.log("This player: "); console.log(this.state.player);
+        console.log(`Current hold: ${this.state.held_tetromino}`);
 
         return(
             <StyledTetrisWrapper
@@ -390,6 +467,7 @@ class Tetris extends React.Component{
                         <Display text={`Wynik: ${this.state.points}`} />
                         <Display text={`Wiersze: ${this.state.rowsCleared}`} />
                         <Display text={`Poziom: ${this.state.level}`} /> 
+                        <DisplayHold held_tetromino={this.state.held_tetromino} />
                     </div>
                     <StartButton 
                         handleGameStart={this.resetGame}
