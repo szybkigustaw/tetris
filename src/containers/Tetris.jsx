@@ -35,6 +35,7 @@ class Tetris extends React.Component{
         this.checkCollision = this.checkCollision.bind(this);
         this.move = this.move.bind(this);
         this.drop = this.drop.bind(this);
+        this.hardDrop = this.hardDrop.bind(this);
         this.rotate = this.rotate.bind(this);
         this.rotatePlayer = this.rotatePlayer.bind(this);
         this.resetGame = this.resetGame.bind(this);
@@ -250,7 +251,6 @@ class Tetris extends React.Component{
             }
         }
     }
-
     rotate(tetromino, dir){
         //
         const rotated_tetromino = tetromino.map((_, index) => (
@@ -379,6 +379,31 @@ class Tetris extends React.Component{
         } 
     }
 
+    hardDrop(player, stage){
+
+        let add_pos_y = 0;
+        while(!this.checkCollision(player, stage, {x: 0, y: add_pos_y})){
+            add_pos_y++;
+        }
+
+        this.setState(prevState => ({
+            player: {
+                pos: {x: prevState.player.pos.x, y: prevState.player.pos.y + add_pos_y - 1},
+                tetromino: prevState.player.tetromino,
+                collided: true
+            },
+            stage: prevState.stage,
+            held_tetromino: prevState.held_tetromino,
+            can_be_switched: prevState.can_be_switched,
+            dropTime: prevState.can_be_switched,
+            gameOver: false,
+            rowsCleared: prevState.rowsCleared,
+            points: prevState.points,
+            level: prevState.level,
+            required_to_level: prevState.required_to_level
+        }))
+    }
+
     resetGame(){
         this.setState(prevState => ({
             player: {
@@ -440,6 +465,10 @@ class Tetris extends React.Component{
 
             case "ArrowDown":{
                 this.drop();
+            } break;
+
+            case "Space":{
+                this.hardDrop(this.state.player, this.state.stage);
             } break;
         }
     }
