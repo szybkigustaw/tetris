@@ -97,6 +97,7 @@ class Tetris extends React.Component{
             this.resetPlayer();
             const clearRowsRes = this.clearRows(newStage);
             //Sprawdzenie czy nie doszło do zmiany poziomu gry
+            //console.log(this.state.rowsCleared + clearRowsRes[1]);
             const checkLevelRes = this.checkLevel(this.state.rowsCleared + clearRowsRes[1], this.state.required_to_level);
             this.setState(prevState => ({
                 player: this.state.player,
@@ -191,6 +192,7 @@ class Tetris extends React.Component{
         let level = 0;
         let req = required_to_level;
         if(rowsCleared === required_to_level){
+            console.log("level up!");
             level++;
             req*= 3;
         }
@@ -214,38 +216,24 @@ class Tetris extends React.Component{
                     required_to_level: prevState.required_to_level
                 }))
             } else if(this.state.can_be_switched){
-                for(let y = 0; y < this.state.held_tetromino.length; y++){
-                    for(let x = 0; x < this.state.held_tetromino[y].length; x++){
-                        if(this.state.held_tetromino[y][x] !== '0'){
-                            if(
-                                !stage[y + player.pos.y] ||
-                                !stage[y + player.pos.y][x + player.pos.x] ||
-                                stage[y + player.pos.y][x + player.pos.x][1] !== "clear"
-                            ){
-                                return;
-                            } else {
-                                const cur_held_tetromino = this.state.held_tetromino;
-                                const cur_tetromino = player.tetromino;
-                                this.setState(prevState => ({
-                                    player: {
-                                        pos: prevState.player.pos,
-                                        tetromino: cur_held_tetromino,
-                                        collided: prevState.player.collided
-                                    },
-                                    stage: prevState.stage,
-                                    held_tetromino: cur_tetromino,
-                                    can_be_switched: false,
-                                    dropTime: prevState.dropTime,
-                                    gameOver: false,
-                                    rowsCleared: prevState.rowsCleared,
-                                    points: prevState.points,
-                                    level: prevState.level,
-                                    required_to_level: prevState.required_to_level
-                                }))
-                            }
-                        }
-                    }
-                }
+                const cur_held_tetromino = this.state.held_tetromino;
+                const cur_tetromino = player.tetromino;
+                this.setState(prevState => ({
+                    player: {
+                        pos: {x: this.STAGE_WIDTH / 2 - 2 , y: 0},
+                        tetromino: cur_held_tetromino,
+                        collided: false
+                    },
+                    stage: prevState.stage,
+                    held_tetromino: cur_tetromino,
+                    can_be_switched: false,
+                    dropTime: prevState.dropTime,
+                    gameOver: false,
+                    rowsCleared: prevState.rowsCleared,
+                    points: prevState.points,
+                    level: prevState.level,
+                    required_to_level: prevState.required_to_level
+                }))
             } else {
                return; 
             }
@@ -275,12 +263,12 @@ class Tetris extends React.Component{
         const cur_pos_x = player_copy.pos.x;
 
         //Tworzymy zmienną odchyłu
-        let offset = 1;
+        let offset = 0;
 
         //Dopóki gra wykrywa kolizję obróconego tetromina
         while(this.checkCollision(player_copy, this.state.stage, {x: 0, y: 0})){
             player_copy.pos.x += offset; //Zwiększaj pozycję kopii gracza w osi X o wartość odchyłu
-            offset = -(offset + offset > 0 ? 1 : -1); //Zwiększ / zmniejsz odchył o 1
+            offset = -(offset + (offset > 0 ? 1 : -1)); //Zwiększ / zmniejsz odchył o 1
 
             //Jeśli odchył jest większy od długości elementu
             if(offset > player_copy.tetromino[0].length){ 
@@ -291,7 +279,7 @@ class Tetris extends React.Component{
         }
 
         //Ustaw nową wartość dla gracza
-        this.setState(prevState => ({
+        if(player_copy !== this.state.player) this.setState(prevState => ({
             player: player_copy,
             stage: prevState.stage,
             held_tetromino: prevState.held_tetromino,
@@ -480,7 +468,7 @@ class Tetris extends React.Component{
         //this.rerender_count++;
         //console.log(this.rerender_count);
         //console.log("This player: "); console.log(this.state.player);
-        console.log(`Current hold: ${this.state.held_tetromino}`);
+        //console.log(`Current hold: ${this.state.held_tetromino}`);
 
         return(
             <StyledTetrisWrapper
