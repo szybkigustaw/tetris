@@ -8,13 +8,17 @@ import Stage from "./Stage";
 import Display from "../components/Display";
 import DisplayHold from "../components/DisplayHold";
 import StartButton from "../components/StartButton";
-import { randomTetromino, TETROMINOS } from "../utils/tetrominos";
+import { TETROMINOS } from "../utils/tetrominos";
 import { StyledTetris, StyledTetrisWrapper } from "./styles/StyledTetris";
 
 class Tetris extends React.Component{
     constructor(props){
         super(props);
         this.state = {
+            random_bag: Array(
+                TETROMINOS['I'], TETROMINOS['J'], TETROMINOS['L'], TETROMINOS['O'], TETROMINOS['S'], 
+                TETROMINOS['Z'], TETROMINOS['T']
+            ),
             player: {
                 pos: {x: 0, y: 0},
                 tetromino: TETROMINOS[0],
@@ -31,6 +35,7 @@ class Tetris extends React.Component{
             required_to_level: 5
         };
         this.createStage = this.createStage.bind(this);
+        this.drawFromBag = this.drawFromBag.bind(this);
         this.registerKeyPresses = this.registerKeyPresses.bind(this);
         this.checkCollision = this.checkCollision.bind(this);
         this.move = this.move.bind(this);
@@ -100,6 +105,7 @@ class Tetris extends React.Component{
             //console.log(this.state.rowsCleared + clearRowsRes[1]);
             const checkLevelRes = this.checkLevel(this.state.rowsCleared + clearRowsRes[1], this.state.required_to_level);
             this.setState(prevState => ({
+                random_bag: this.state.random_bag,
                 player: this.state.player,
                 stage: clearRowsRes[0],
                 held_tetromino: prevState.held_tetromino,
@@ -116,6 +122,7 @@ class Tetris extends React.Component{
 
         //Ustawienie nowego stanu gry
             this.setState(prevState => ({
+                    random_bag: this.state.random_bag,
                     player: this.state.player,
                     stage: newStage,
                     held_tetromino: prevState.held_tetromino,
@@ -204,6 +211,7 @@ class Tetris extends React.Component{
         if(!this.state.gameOver){
             if(this.state.held_tetromino === null){
                 this.setState(prevState => ({
+                    random_bag: prevState.random_bag,
                     player: this.resetPlayer(),
                     stage: prevState.stage,
                     held_tetromino: prevState.player.tetromino,
@@ -219,6 +227,7 @@ class Tetris extends React.Component{
                 const cur_held_tetromino = this.state.held_tetromino;
                 const cur_tetromino = player.tetromino;
                 this.setState(prevState => ({
+                    random_bag: prevState.random_bag,
                     player: {
                         pos: {x: this.STAGE_WIDTH / 2 - 2 , y: 0},
                         tetromino: cur_held_tetromino,
@@ -280,6 +289,7 @@ class Tetris extends React.Component{
 
         //Ustaw nową wartość dla gracza
         if(player_copy !== this.state.player) this.setState(prevState => ({
+            random_bag: prevState.random_bag,
             player: player_copy,
             stage: prevState.stage,
             held_tetromino: prevState.held_tetromino,
@@ -296,6 +306,7 @@ class Tetris extends React.Component{
         if(!this.state.gameOver){
             if(!this.checkCollision(this.state.player, this.state.stage, {x: dir, y: 0})) {
                 this.setState(prevState => ({
+                    random_bag: prevState.random_bag,
                     stage: prevState.stage,
                     held_tetromino: prevState.held_tetromino,
                     dropTime: prevState.dropTime,
@@ -318,6 +329,7 @@ class Tetris extends React.Component{
        if(!this.state.gameOver){
         if(!this.checkCollision(this.state.player, this.state.stage, {x: 0, y: 1})){
             this.setState(prevState => ({
+                    random_bag: prevState.random_bag,
                     stage: prevState.stage,
                     held_tetromino: prevState.held_tetromino,
                     dropTime: prevState.dropTime,
@@ -336,6 +348,7 @@ class Tetris extends React.Component{
                 if(this.state.player.pos.y < 1){
                     console.log("bruh");
                     this.setState(prevState => ({
+                        random_bag: prevState.random_bag,
                         player: prevState.player,
                         stage: prevState.stage,
                         held_tetromino: prevState.held_tetromino,
@@ -348,6 +361,7 @@ class Tetris extends React.Component{
                     }));
                 } else {
                     this.setState(prevState => ({
+                        random_bag: prevState.random_bag,
                         stage: prevState.stage,
                         held_tetromino: prevState.held_tetromino,
                         dropTime: prevState.dropTime,
@@ -375,6 +389,7 @@ class Tetris extends React.Component{
         }
 
         this.setState(prevState => ({
+            random_bag: prevState.random_bag,
             player: {
                 pos: {x: prevState.player.pos.x, y: prevState.player.pos.y + add_pos_y - 1},
                 tetromino: prevState.player.tetromino,
@@ -392,11 +407,28 @@ class Tetris extends React.Component{
         }))
     }
 
+    drawFromBag(Bag){
+        const tetrominos = "IJLOSZT";
+        let bag = Bag;
+        if(bag.length === 0){
+            bag = new Array(7);
+            for(let i = 0; i < bag.length; i++){
+                bag[i] = TETROMINOS[tetrominos[i]];
+            }
+        }
+        const drawn_tetromino = bag[Math.floor(Math.random() * bag.length)];
+        bag = bag.length > 0 ? bag.filter(tetromino => tetromino.shape !== drawn_tetromino.shape) : new Array(0);
+
+        return [drawn_tetromino, bag];
+    }
+
     resetGame(){
+        const drawResult = this.drawFromBag(this.state.random_bag);
         this.setState(prevState => ({
+            random_bag: drawResult[1],
             player: {
                 pos: {x: this.STAGE_WIDTH / 2 - 2, y: 0},
-                tetromino: randomTetromino().shape,
+                tetromino: drawResult[0].shape,
                 collided: false
             },
             stage: this.createStage(),
@@ -412,10 +444,12 @@ class Tetris extends React.Component{
     }
 
     resetPlayer(){
+        const drawResult = this.drawFromBag(this.state.random_bag);
         this.setState(prevState => ({
+            random_bag: drawResult[1],
             player: {
                 pos: {x: this.STAGE_WIDTH / 2 - 2, y: 0},
-                tetromino: randomTetromino().shape,
+                tetromino: drawResult[0].shape,
                 collided: false
             },
             stage: prevState.stage,
