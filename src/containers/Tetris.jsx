@@ -27,9 +27,9 @@ class Tetris extends React.Component{
             stage: this.createStage(),
             held_tetromino: null,
             can_be_switched: true,
-            dropTime: null,
+            drop_time: 1000,
             gameOver: false,
-            rowsCleared: 0,
+            rows_cleared: 0,
             points: 0,
             level: 1,
             required_to_level: 5
@@ -66,11 +66,16 @@ class Tetris extends React.Component{
         return stage;
     }
 
+    componentDidMount(){
+        this.resetGame();
+        document.querySelector("div.game-wrapper").focus();
+    }
+
     componentDidUpdate(prevProps, prevState){
 
-        //console.log("Rows Cleared:" + this.state.rowsCleared);
+        //console.log("Rows Cleared:" + this.state.rows_cleared);
         //console.log("Required to level: " + this.state.required_to_level);
-        //console.log(`Level increase: ${this.state.rowsCleared === this.state.required_to_level}`);
+        //console.log(`Level increase: ${this.state.rows_cleared === this.state.required_to_level}`);
 
         //Jeśli stan gracza się zmienił:
         if(this.state.gameOver) clearInterval(this.gameInterval);
@@ -102,21 +107,24 @@ class Tetris extends React.Component{
             this.resetPlayer();
             const clearRowsRes = this.clearRows(newStage);
             //Sprawdzenie czy nie doszło do zmiany poziomu gry
-            //console.log(this.state.rowsCleared + clearRowsRes[1]);
-            const checkLevelRes = this.checkLevel(this.state.rowsCleared + clearRowsRes[1], this.state.required_to_level);
+            //console.log(this.state.rows_cleared + clearRowsRes[1]);
+            const checkLevelRes = this.checkLevel(this.state.level, this.state.rows_cleared + clearRowsRes[1], this.state.required_to_level, this.state.drop_time);
             this.setState(prevState => ({
                 random_bag: this.state.random_bag,
                 player: this.state.player,
                 stage: clearRowsRes[0],
                 held_tetromino: prevState.held_tetromino,
                 can_be_switched: true,
-                dropTime: prevState.dropTime,
+                drop_time: checkLevelRes[2],
                 gameOver: false,
-                rowsCleared: prevState.rowsCleared + clearRowsRes[1],
+                rows_cleared: prevState.rows_cleared + clearRowsRes[1],
                 points: prevState.points + clearRowsRes[2],
-                level: prevState.level + checkLevelRes[0],
+                level: checkLevelRes[0],
                 required_to_level: checkLevelRes[1]
             }));
+            console.log(`Current drop time: ${Number(this.state.drop_time)}`);
+            clearInterval(this.gameInterval);
+            this.gameInterval = setInterval(() => {if(!this.state.gameOver) this.drop()}, this.state.drop_time);
             return;
         }
 
@@ -127,9 +135,9 @@ class Tetris extends React.Component{
                     stage: newStage,
                     held_tetromino: prevState.held_tetromino,
                     can_be_switched: prevState.can_be_switched,
-                    dropTime: prevState.dropTime,
+                    drop_time: prevState.drop_time,
                     gameOver: false,
-                    rowsCleared: prevState.rowsCleared,
+                    rows_cleared: prevState.rows_cleared,
                     points: prevState.points,
                     level: prevState.level,
                     required_to_level: prevState.required_to_level
@@ -166,11 +174,11 @@ class Tetris extends React.Component{
     }
 
     clearRows(stage){
-        let rowsCleared = 0;
+        let rows_cleared = 0;
         const filteredStage = stage.reduce((accumulator, row) => {
             if(row.findIndex(cell => cell[0] === "0") === -1){
                 console.log(`Row cleared at: ${row}`);
-                rowsCleared++;
+                rows_cleared++;
                 accumulator.unshift(new Array(stage[0].length).fill(['0','clear']));
                 return accumulator;
             } else {
@@ -179,7 +187,7 @@ class Tetris extends React.Component{
             }
         }, []);
         let score;
-        switch(rowsCleared){
+        switch(rows_cleared){
             case 0: score = 0;
             break;
             case 1: score = 200 * this.state.level;
@@ -192,19 +200,20 @@ class Tetris extends React.Component{
             break;
         }
 
-        return [filteredStage, rowsCleared, score];
+        return [filteredStage, rows_cleared, score];
     }
 
-    checkLevel(rowsCleared, required_to_level){
-        let level = 0;
+    checkLevel(current_level, rows_cleared, required_to_level, current_drop_time){
+        let level = current_level;
         let req = required_to_level;
-        if(rowsCleared === required_to_level){
-            console.log("level up!");
+        let drop_time = current_drop_time;
+        if(rows_cleared === required_to_level){
             level++;
-            req*= 3;
+            req = 5 * level;
+            drop_time = drop_time - (drop_time * 0.125);
         }
 
-        return [level, req];
+        return [level, req, drop_time];
     }
 
     switchHold(player, stage){
@@ -216,9 +225,9 @@ class Tetris extends React.Component{
                     stage: prevState.stage,
                     held_tetromino: prevState.player.tetromino,
                     can_be_switched: prevState.can_be_switched,
-                    dropTime: prevState.dropTime,
+                    drop_time: prevState.drop_time,
                     gameOver: false,
-                    rowsCleared: prevState.rowsCleared,
+                    rows_cleared: prevState.rows_cleared,
                     points: prevState.points,
                     level: prevState.level,
                     required_to_level: prevState.required_to_level
@@ -236,9 +245,9 @@ class Tetris extends React.Component{
                     stage: prevState.stage,
                     held_tetromino: cur_tetromino,
                     can_be_switched: false,
-                    dropTime: prevState.dropTime,
+                    drop_time: prevState.drop_time,
                     gameOver: false,
-                    rowsCleared: prevState.rowsCleared,
+                    rows_cleared: prevState.rows_cleared,
                     points: prevState.points,
                     level: prevState.level,
                     required_to_level: prevState.required_to_level
@@ -293,9 +302,9 @@ class Tetris extends React.Component{
             player: player_copy,
             stage: prevState.stage,
             held_tetromino: prevState.held_tetromino,
-            dropTime: prevState.dropTime,
+            drop_time: prevState.drop_time,
             gameOver: prevState.gameOver,
-            rowsCleared: prevState.rowsCleared,
+            rows_cleared: prevState.rows_cleared,
             points: prevState.points,
             level: prevState.level,
             required_to_level: prevState.required_to_level
@@ -309,14 +318,14 @@ class Tetris extends React.Component{
                     random_bag: prevState.random_bag,
                     stage: prevState.stage,
                     held_tetromino: prevState.held_tetromino,
-                    dropTime: prevState.dropTime,
+                    drop_time: prevState.drop_time,
                     gameOver: prevState.gameOver,
                     player: {
                         pos: {x: prevState.player.pos.x + dir, y: prevState.player.pos.y},
                         tetromino: prevState.player.tetromino,
                         collided: false
                     },
-                    rowsCleared: prevState.rowsCleared,
+                    rows_cleared: prevState.rows_cleared,
                     points: prevState.points,
                     level: prevState.level,
                     required_to_level: prevState.required_to_level
@@ -332,14 +341,14 @@ class Tetris extends React.Component{
                     random_bag: prevState.random_bag,
                     stage: prevState.stage,
                     held_tetromino: prevState.held_tetromino,
-                    dropTime: prevState.dropTime,
+                    drop_time: prevState.drop_time,
                     gameOver: prevState.gameOver,
                     player: {
                         pos: {x: prevState.player.pos.x, y: prevState.player.pos.y + 1},
                         tetromino: prevState.player.tetromino,
                         collided: false
                     },
-                    rowsCleared: prevState.rowsCleared,
+                    rows_cleared: prevState.rows_cleared,
                     points: prevState.points,
                     level: prevState.level,
                     required_to_level: prevState.required_to_level
@@ -352,9 +361,9 @@ class Tetris extends React.Component{
                         player: prevState.player,
                         stage: prevState.stage,
                         held_tetromino: prevState.held_tetromino,
-                        dropTime: prevState.dropTime,
+                        drop_time: prevState.drop_time,
                         gameOver: true,
-                        rowsCleared: prevState.rowsCleared,
+                        rows_cleared: prevState.rows_cleared,
                         points: prevState.points,
                         level: prevState.level,
                         required_to_level: prevState.required_to_level
@@ -364,14 +373,14 @@ class Tetris extends React.Component{
                         random_bag: prevState.random_bag,
                         stage: prevState.stage,
                         held_tetromino: prevState.held_tetromino,
-                        dropTime: prevState.dropTime,
+                        drop_time: prevState.drop_time,
                         gameOver: prevState.gameOver,
                         player: {
                             pos: {x: prevState.player.pos.x, y: prevState.player.pos.y},
                             tetromino: prevState.player.tetromino,
                             collided: true
                         },
-                        rowsCleared: prevState.rowsCleared,
+                        rows_cleared: prevState.rows_cleared,
                         points: prevState.points,
                         level: prevState.level,
                         required_to_level: prevState.required_to_level
@@ -398,9 +407,9 @@ class Tetris extends React.Component{
             stage: prevState.stage,
             held_tetromino: prevState.held_tetromino,
             can_be_switched: prevState.can_be_switched,
-            dropTime: prevState.can_be_switched,
+            drop_time: prevState.can_be_switched,
             gameOver: false,
-            rowsCleared: prevState.rowsCleared,
+            rows_cleared: prevState.rows_cleared,
             points: prevState.points,
             level: prevState.level,
             required_to_level: prevState.required_to_level
@@ -433,14 +442,14 @@ class Tetris extends React.Component{
             },
             stage: this.createStage(),
             held_tetromino: null,
-            dropTime: null,
+            drop_time: 1000,
             gameOver: false,
-            rowsCleared: 0,
+            rows_cleared: 0,
             points: 0,
             level: 1,
             required_to_level: 5
         }));
-        this.gameInterval = setInterval(() => { if(!this.state.gameOver) this.drop() }, 500);
+        this.gameInterval = setInterval(() => { if(!this.state.gameOver) this.drop() }, this.state.drop_time);
     }
 
     resetPlayer(){
@@ -454,9 +463,9 @@ class Tetris extends React.Component{
             },
             stage: prevState.stage,
             held_tetromino: prevState.held_tetromino,
-            dropTime: prevState.dropTime,
+            drop_time: prevState.drop_time,
             gameOver: false,
-            rowsCleared: prevState.rowsCleared,
+            rows_cleared: prevState.rows_cleared,
             points: prevState.points,
             level: prevState.level,
             required_to_level: prevState.required_to_level
@@ -507,6 +516,7 @@ class Tetris extends React.Component{
         return(
             <StyledTetrisWrapper
                 role="button"
+                className="game-wrapper"
                 tabIndex={0}
                 onKeyDown={(e) => this.registerKeyPresses(e)}
             >
@@ -516,7 +526,7 @@ class Tetris extends React.Component{
                 <aside>
                     <div>
                         <Display text={`Wynik: ${this.state.points}`} />
-                        <Display text={`Wiersze: ${this.state.rowsCleared}`} />
+                        <Display text={`Wiersze: ${this.state.rows_cleared}`} />
                         <Display text={`Poziom: ${this.state.level}`} /> 
                         <DisplayHold held_tetromino={this.state.held_tetromino} />
                     </div>
@@ -531,7 +541,7 @@ class Tetris extends React.Component{
                     <div>
                         <Display text="Koniec gry!" />
                         <Display text={`Wynik: ${this.state.points}`} />
-                        <Display text={`Wiersze: ${this.state.rowsCleared}`} />
+                        <Display text={`Wiersze: ${this.state.rows_cleared}`} />
                         <Display text={`Poziom: ${this.state.level}`} /> 
                     </div>
                     <StartButton 

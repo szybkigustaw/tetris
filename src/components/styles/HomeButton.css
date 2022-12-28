@@ -1,0 +1,10 @@
+.home-button{
+    border: 2px solid black;
+    padding: 2vh 2vw;
+    color: black;
+    text-decoration-line: none;
+}
+
+.home-button:hover{
+    font-weight: bold;
+}
