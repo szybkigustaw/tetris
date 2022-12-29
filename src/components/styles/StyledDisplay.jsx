@@ -7,7 +7,7 @@ import styled from "styled-components";
 export const StyledDisplay = styled.div`
     width: 100%;
     max-width: 15vw;
-    padding: 5vh 2vw;
+    padding: 2vh 2vw;
     text-align: center;
     margin: 10px 0;
     font-weight: ${props => (props.text === "Koniec gry!" ? "bold" : "normal")};

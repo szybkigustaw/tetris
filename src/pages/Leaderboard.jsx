@@ -3,7 +3,7 @@ import { useStore } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 const sortData = function(inputData){
-    let input_data = inputData;
+    let input_data = Array.from(inputData);
     let output_data = [];
     while(output_data.length !== inputData.length){
         let max_value = input_data[0].points;
@@ -13,14 +13,15 @@ const sortData = function(inputData){
 
         const max_value_at = input_data.findIndex(data_row => data_row.points === max_value);
         output_data.push(input_data[max_value_at]);
-        input_data = input_data.filter(data_row => data_row.points !== max_value);
+        input_data = input_data.filter((_, index) => index !== max_value_at);
     }
 
     return output_data;
 }
 
 const Leaderboard = (props) => {
-    const data = sortData(useStore().getState());
+    const store = useStore();
+    const data = sortData(store.getState());
 
     console.log(data);
         return(
@@ -29,6 +30,7 @@ const Leaderboard = (props) => {
                 <table>
                     <thead>
                         <tr>
+                            <th>Lp.</th>
                             <th>Gracz</th>
                             <th>Wiersze</th>
                             <th>Poziom</th>
@@ -38,7 +40,10 @@ const Leaderboard = (props) => {
                     </thead>
                     <tbody>
                         {data.map(data_row => (
-                        <tr>
+                        <tr
+                            key={data_row.id}
+                        >
+                            <td>{data_row.id}</td>
                             <td>{data_row.player_name}</td>
                             <td>{data_row.rows_cleared}</td>
                             <td>{data_row.level}</td>
