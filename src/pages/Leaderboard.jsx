@@ -39,11 +39,11 @@ const Leaderboard = (props) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map(data_row => (
+                        {data.map((data_row, index) => (
                         <tr
                             key={data_row.id}
                         >
-                            <td>{data_row.id}</td>
+                            <td>{index + 1}</td>
                             <td>{data_row.player_name}</td>
                             <td>{data_row.rows_cleared}</td>
                             <td>{data_row.level}</td>
