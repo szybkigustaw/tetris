@@ -5,11 +5,12 @@ import Home from './pages/Home';
 import Help from './pages/Help';
 import Leaderboard from './pages/Leaderboard';
 import NotFound from './pages/NotFound';
+import GameResult from './containers/GameResult';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import store from './utils/store';
 import { Provider } from 'react-redux'; 
-import TetrisRedux from './containers/TetrisReduxWrapper';
+import Tetris from './containers/Tetris';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -18,7 +19,8 @@ root.render(
     <BrowserRouter>
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/game" element={ <TetrisRedux /> } />
+      <Route path="/game" element={ <Tetris /> } />
+      <Route path="/game/result" element={<GameResult fromGame={false} />} />
       <Route path="/help" element={ <Help /> } />
       <Route path="/leaderboard" element={ <Leaderboard /> } />
       <Route path="*" element={ <NotFound /> } />

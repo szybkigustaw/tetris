@@ -367,17 +367,7 @@ class Tetris extends React.Component{
                         points: prevState.points,
                         level: prevState.level,
                         required_to_level: prevState.required_to_level
-                    }));
-                    { this.props.dispatch({
-                        type: "scoreAdded",
-                        payload: {
-                            player_name: 'null',
-                            rows_cleared: this.state.rows_cleared,
-                            level: this.state.level,
-                            time: 'Million',
-                            points: this.state.points
-                        }
-                    }) };
+                    })); 
                 } else {
                     this.setState(prevState => ({
                         random_bag: prevState.random_bag,
@@ -546,21 +536,16 @@ class Tetris extends React.Component{
                 </aside>
             </StyledTetris>
             :
-            <StyledTetris>
-                <aside>
-                    <div>
-                        <Display text="Koniec gry!" />
-                        <Display text={`Wynik: ${this.state.points}`} />
-                        <Display text={`Wiersze: ${this.state.rows_cleared}`} />
-                        <Display text={`Poziom: ${this.state.level}`} /> 
-                    </div>
-                    <StartButton 
-                        handleGameStart={this.resetGame}
-                    />
-                    
-                    <Navigate to="/leaderboard" />
-                </aside>
-            </StyledTetris>
+            <Navigate to="/game/result" 
+            state={{
+                fromGame: true, 
+                score: {
+                    rows_cleared: this.state.rows_cleared,
+                    level: this.state.level,
+                    time: null,
+                    points: this.state.points
+                }
+            }} />
             }
             </StyledTetrisWrapper>
         );

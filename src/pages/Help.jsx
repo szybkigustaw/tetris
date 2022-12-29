@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class Help extends React.Component{
     constructor(props){
@@ -9,6 +10,7 @@ class Help extends React.Component{
         return(
             <div>
                 <h1>Pomoc</h1>
+                <Link to="/game">Zagraj!</Link>
             </div>
         );
     };
