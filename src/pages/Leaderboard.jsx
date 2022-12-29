@@ -1,12 +1,28 @@
 import React from 'react';
-import { useLocation } from 'react-router';
+import { useStore } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-class Leaderboard extends React.Component{
-    constructor(props){
-        super(props);
-    };
+const sortData = function(inputData){
+    let input_data = inputData;
+    let output_data = [];
+    while(output_data.length !== inputData.length){
+        let max_value = input_data[0].points;
+        input_data.map(data_row => (
+            max_value = data_row.points > max_value ? data_row.points : max_value  
+        ));
 
-    render(){
+        const max_value_at = input_data.findIndex(data_row => data_row.points === max_value);
+        output_data.push(input_data[max_value_at]);
+        input_data = input_data.filter(data_row => data_row.points !== max_value);
+    }
+
+    return output_data;
+}
+
+const Leaderboard = (props) => {
+    const data = sortData(useStore().getState());
+
+    console.log(data);
         return(
             <div>
                 <h1>Tablica wyników</h1>
@@ -21,14 +37,20 @@ class Leaderboard extends React.Component{
                         </tr>
                     </thead>
                     <tbody>
+                        {data.map(data_row => (
                         <tr>
-                            <td colSpan={6}>{leaderboardLength}</td>
+                            <td>{data_row.player_name}</td>
+                            <td>{data_row.rows_cleared}</td>
+                            <td>{data_row.level}</td>
+                            <td>{data_row.time}</td>
+                            <td colSpan={2}>{data_row.points}</td>
                         </tr>
+                        ))}
                     </tbody>
                 </table>
+                <Link to="/game">Zagraj jeszcze raz!</Link>
             </div>
         );
     };
-}
 
 export default Leaderboard;

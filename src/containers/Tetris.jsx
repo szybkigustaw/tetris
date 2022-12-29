@@ -10,15 +10,15 @@ import DisplayHold from "../components/DisplayHold";
 import StartButton from "../components/StartButton";
 import { TETROMINOS } from "../utils/tetrominos";
 import { StyledTetris, StyledTetrisWrapper } from "./styles/StyledTetris";
-
+import { Navigate } from "react-router";
 class Tetris extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            random_bag: Array(
+            random_bag: [
                 TETROMINOS['I'], TETROMINOS['J'], TETROMINOS['L'], TETROMINOS['O'], TETROMINOS['S'], 
                 TETROMINOS['Z'], TETROMINOS['T']
-            ),
+            ],
             player: {
                 pos: {x: 0, y: 0},
                 tetromino: TETROMINOS[0],
@@ -368,6 +368,16 @@ class Tetris extends React.Component{
                         level: prevState.level,
                         required_to_level: prevState.required_to_level
                     }));
+                    { this.props.dispatch({
+                        type: "scoreAdded",
+                        payload: {
+                            player_name: 'null',
+                            rows_cleared: this.state.rows_cleared,
+                            level: this.state.level,
+                            time: 'Million',
+                            points: this.state.points
+                        }
+                    }) };
                 } else {
                     this.setState(prevState => ({
                         random_bag: prevState.random_bag,
@@ -547,6 +557,8 @@ class Tetris extends React.Component{
                     <StartButton 
                         handleGameStart={this.resetGame}
                     />
+                    
+                    <Navigate to="/leaderboard" />
                 </aside>
             </StyledTetris>
             }
