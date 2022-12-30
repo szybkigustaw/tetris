@@ -1,3 +1,7 @@
+/*
+    Credits - komponent reprezentujący "szybę" wmontowywaną w stronę Help. Zawiera informacje o autorze oraz źródłach
+*/
+
 import React from "react";
 import "./styles/Pane.css";
 import "./styles/Credits.css";

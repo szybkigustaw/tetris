@@ -1,3 +1,7 @@
+/*
+    Generalny arkusz stylów stosowany we wszystkich podstronach na stronie Help
+*/
+
 *, *::before, *::after{
     box-sizing: border-box;
     margin: 0;

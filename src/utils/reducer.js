@@ -1,3 +1,9 @@
+/*
+    Reducer - specjalna funkcja implementowana do kontenera Reduxa, odpowiedzialna za modyfikację jego zawartości.
+    Nie można tego przeprowadzić bez jej wykorzystania.
+*/
+
+//Funkcja zawiera tylko jedną możliwą akcję - dodanie wyniku
 function reducer(state=[], action){
     switch(action.type){
 

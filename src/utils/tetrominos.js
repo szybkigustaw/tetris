@@ -1,6 +1,6 @@
 /*
     Tetrominos - skrypt pomocniczny, zawierający informacje o wszystkich dostępnych Tetrominach.
-    Zawiera również funkcję odpowiedzialną za losowanie Tetromina. 
+    Zawiera również funkcję odpowiedzialną za losowanie Tetromina (nieużywana); 
  */
 
 export const TETROMINOS = {

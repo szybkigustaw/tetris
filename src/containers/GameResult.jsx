@@ -1,10 +1,21 @@
-import { React, useState, useEffect } from "react";
+/*
+    GameResult - komponent reprezentujący stronę z podsumowaniem gry. 
+    Informacje o pochodzeniu (jeśli nie odwiedzamy tej strony z poziomu 
+    strony gry, cofa nas do strony głównej) oraz o wynikach pozyskuje ze stanu
+    przekazywanego do React Routera. Wyniki uzupełnione o pseudonim gracza zapisywane
+    są potem do kontenera Redux - dla łatwego dostępu na stronie Tablicy Wyników.
+*/
+
+import { React, useState } from "react";
 import Display from "../components/Display";
-import { useLocation, Navigate, useNavigate } from "react-router";
+import { useLocation, Navigate } from "react-router";
 import { useStore } from "react-redux";
 import './styles/GameResult.css';
 
+//Funkcja zapisuje dane o wynikach w kontenerze Redux.
 const saveScore = (score, store, player_name) => {
+
+    //Wyślij akcję do zarządzacza kontenerem Reduxa
     store.dispatch({
         type: 'scoreAdded',
         payload: {
@@ -24,6 +35,7 @@ const GameResult = props => {
     const [redirect_to_home, setRTH] = useState(() => undefined);
     const [player_name, setName] = useState(() => undefined);
 
+    //Jeśli odwiedzamy stronę "z zewnątrz" - odeślij nas do strony głónej
     if(!(props.fromGame || location.state.fromGame)){
         setRTH(true);
     }

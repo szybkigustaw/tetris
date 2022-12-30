@@ -1,3 +1,8 @@
+/*
+`   Arkusz stylów do podstrony Credits
+*/
+
+
 div.pane-main{
     display: flex;
     flex-flow: column nowrap;

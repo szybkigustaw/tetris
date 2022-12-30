@@ -1,3 +1,7 @@
+/*
+    Arkusz stylów do podstrony Controls
+*/
+
 div.pane-main{
     display: flex;
     flex-flow: column nowrap;

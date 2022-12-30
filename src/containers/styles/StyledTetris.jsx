@@ -8,6 +8,7 @@
 */
 import styled from "styled-components";
 
+//Wrapper okna gry
 export const StyledTetrisWrapper = styled.div`
     width: 100vw;
     height: 100vh;
@@ -16,6 +17,7 @@ export const StyledTetrisWrapper = styled.div`
     background-repeat: no-repeat;
 `;
 
+//Właściwa przestrzeń z grą
 export const StyledTetris = styled.div`
     display: flex;
     justify-content: center;

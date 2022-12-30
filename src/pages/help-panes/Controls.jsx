@@ -1,3 +1,7 @@
+/*
+    Controls - komponent reprezentujący "szybę" wbudowywaną w stronę Help. Zawiera informacje o sterowaniu w grze,
+*/
+
 import React from "react";
 import "./styles/Pane.css";
 import "./styles/Controls.css";

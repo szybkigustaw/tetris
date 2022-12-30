@@ -1,6 +1,7 @@
 /*
-    StyledDisplay - komponent zagnieżdżony wewnątrz komponentu Display, odpowiedzialny za renderowanie stylizowanego komponentu.
-    Przyjmuje jako własności tekst wyświetlany, tworzy stylizowany komponent okna z informacją podaną we własnościach.
+    StyledDisplayHold - komponent zagnieżdżony wewnątrz komponentu DisplayHold, 
+    odpowiedzialny za renderowanie stylizowanego komponentu. Tworzy stylizowany 
+    komponent okna z informacją o przechowywanym Tetrominie.
 */
 import styled from "styled-components";
 
@@ -10,12 +11,11 @@ export const StyledDisplayHold = styled.div`
     justify-content: center;
     width: 100%;
     max-width: 15vw;
-    padding: 5vh 2vw;
+    padding: 1vh 1vw;
     text-align: center;
     margin: 10px 0;
-    font-weight: ${props => (props.text === "Koniec gry!" ? "bold" : "normal")};
-    border: 2px solid ${props => (props.text === "Koniec gry!" ? "black" : "white")};
+    border: 2px solid white;
     border-radius: 30px;
-    color: ${props => (props.text === "Koniec gry!" ? "black" : "white")};
-    background-color: ${props => (props.text === "Koniec gry!" ? "rgba(255,0,0,0.5)" : "black")};
+    color: white;
+    background-color: black;
 `;

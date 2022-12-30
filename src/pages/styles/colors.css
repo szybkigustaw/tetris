@@ -1,3 +1,8 @@
+/*
+    Arkusz stylów zawierający paletę kolorów wzorowaną na
+    oficjalnych kolorach Tetrominów
+*/
+
 * {
     --light-blue: rgb(135, 206, 250);
     --dark-blue: rgb(0, 0, 139);

@@ -1,6 +1,6 @@
 /*
-    Display - komponent przedstawiający pojedyńcze "okienko" z informacją.
-    Jak własność przyjmuje tekst do wyświetlenia.
+    DisplayHold - Zmodyfikowany komponent Display, 
+    przedstawiający okno z informacją o przechowywanym Tetrominie.
 */
 import React from "react";
 import HoldMatrix from "../containers/HoldMatrix";
@@ -13,6 +13,7 @@ class DisplayHold extends React.Component{
 
     render(){
 
+        //Jeśli nie jest przechowywane żadne Tetromino, stwórz pustą macierz 4x4
         let blank_stage = null;
         if(this.props.held_tetromino === null){
             blank_stage = Array.from(new Array(4), () => (

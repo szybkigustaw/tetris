@@ -1,3 +1,7 @@
+/*
+    Rules - komponent reprezentujący "szybę" wmontowywaną w stronę Help. Zawiera informacje o zasadach gry.
+ */
+
 import React from "react";
 import "./styles/Pane.css";
 import "./styles/Rules.css"

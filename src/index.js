@@ -1,3 +1,8 @@
+/*
+  index - miejsce, w którym dochodzi do zamontowania wirtualnego DOM Reacta do drzewa DOM strony.
+  Tutaj też React Router dokonuje podziału na podstrony i przypisaniu im odpowiednich komponentów.
+*/
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';

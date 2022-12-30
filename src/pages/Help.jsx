@@ -1,3 +1,8 @@
+/*
+    Help - komponent reprezentujący stronę pomocy. Zawiera panel z czterema zakładkami, po których
+    naciśnięciu React Router w miejscu komponentu Outlet renderuje "szyby" - odpowiednie podstrony.
+*/
+
 import React from 'react';
 import { Outlet } from 'react-router';
 import { Link } from 'react-router-dom';

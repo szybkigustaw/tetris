@@ -1,7 +1,8 @@
 /*
-    Stage - komponent-kontener odpowiedzialny za renderowanie macierzy z komórkami.
+    HoldMatrix - komponent-kontener odpowiedzialny za renderowanie macierzy z komórkami.
     Jako własności przyjmuje informacje o stanie poszczególnych komórek.
     Renderuje macierz, wypełniając ją komponentami Cell, przekazując im dane o ich typie oraz kolorze.
+    W przeciwieństwie do Stage, HoldMatrix wyświetla macierz dla przechowywanego Tetromina, nie całej sceny gry.
 */
 
 import React from "react";

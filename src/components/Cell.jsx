@@ -5,7 +5,7 @@
 */
 
 import React from "react";
-import { TETROMINOS } from "../utils/tetrominos";
+import { TETROMINOS } from "../utils/tetrominos"; //Pobieramy listę Tetrominów dostępnych w grze
 import StyledCell from "./styles/StyledCell";
 
 class Cell extends React.Component{
