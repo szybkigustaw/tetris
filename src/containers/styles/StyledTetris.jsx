@@ -11,7 +11,9 @@ import styled from "styled-components";
 export const StyledTetrisWrapper = styled.div`
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.55);
+    background-image: url(${require('../../images/background.jpg')});
+    background-size: cover;
+    background-repeat: no-repeat;
 `;
 
 export const StyledTetris = styled.div`

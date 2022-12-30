@@ -221,7 +221,7 @@ class Tetris extends React.Component{
         if(rows_cleared >= required_to_level){
             level++;
             req = required_to_level + (5 * level);
-            drop_time = drop_time - (drop_time * 0.05);
+            drop_time = drop_time - (drop_time * 0.15);
         }
 
         return [level, req, drop_time];

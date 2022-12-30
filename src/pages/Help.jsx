@@ -1,19 +1,67 @@
 import React from 'react';
+import { Outlet } from 'react-router';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import './styles/Help.css';
 
-class Help extends React.Component{
-    constructor(props){
-        super(props);
-    };
+const Help = (props) => {
 
-    render(){
-        return(
-            <div>
+    const [clicked, setClicked] = useState(null);
+
+    return(
+        <div className="main">
+            <header className="help-header">
+                <Link
+                    className="home-link"
+                    to="/"
+                >
+                    Do Głównej
+                </Link>
                 <h1>Pomoc</h1>
-                <Link to="/game">Zagraj!</Link>
+            </header>
+            <div className="options-bar">
+                <div className={clicked === 'controls' ? "option clicked" : 'option'}>
+                    <Link
+                        className="link" 
+                        to="/help/controls"
+                        onClick={() => setClicked('controls')}
+                    >
+                        Sterowanie
+                    </Link>
+                </div>
+                <div className={clicked === 'rules' ? 'option clicked' : 'option'}>
+                    <Link 
+                        className='link'
+                        to="/help/rules"
+                        onClick={() => setClicked('rules')}
+                    >
+                        Zasady gry
+                    </Link>
+                </div>
+                <div className={clicked === 'techstack' ? 'option clicked' : 'option'}>
+                    <Link 
+                        className='link'
+                        to="/help/techstack"
+                        onClick={() => setClicked('techstack')}
+                    >
+                        Użyte technologie
+                    </Link>
+                </div>
+                <div className={clicked === 'credits' ? "option clicked" : 'option'}>
+                    <Link 
+                        className='link'
+                        to="/help/credits"
+                        onClick={() => setClicked('credits')}
+                    >
+                        Autor
+                    </Link>
+                </div>
             </div>
-        );
-    };
+            <div className="outlet-container">
+                <Outlet />
+            </div>
+        </div>
+    );
 }
 
 export default Help;

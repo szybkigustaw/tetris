@@ -1,6 +1,7 @@
 import React from 'react';
 import { useStore } from 'react-redux';
 import { Link } from 'react-router-dom';
+import "./styles/Leaderboard.css";
 
 const sortData = function(inputData){
     let input_data = Array.from(inputData);
@@ -14,6 +15,7 @@ const sortData = function(inputData){
         const max_value_at = input_data.findIndex(data_row => data_row.points === max_value);
         output_data.push(input_data[max_value_at]);
         input_data = input_data.filter((_, index) => index !== max_value_at);
+        if(output_data.length >= 8) break;
     }
 
     return output_data;
@@ -25,9 +27,13 @@ const Leaderboard = (props) => {
 
     console.log(data);
         return(
-            <div>
-                <h1>Tablica wyników</h1>
-                <table>
+            <div className="leaderboard-main">
+            <header className="leaderboard-header">
+                <h1>
+                    Tablica wyników
+                </h1>
+            </header>
+                <table className="leaderboard">
                     <thead>
                         <tr>
                             <th>Lp.</th>
@@ -53,7 +59,13 @@ const Leaderboard = (props) => {
                         ))}
                     </tbody>
                 </table>
-                <Link to="/game">Zagraj jeszcze raz!</Link>
+                <Link
+                    role="button"
+                    className="leaderborad-game-link"
+                    to="/game"
+                >
+                    Zagraj jeszcze raz!
+                </Link>
             </div>
         );
     };

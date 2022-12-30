@@ -1,0 +1,92 @@
+*, *::before, *::after{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div.main{
+    width: 100vw;
+    height: 100vh;
+    background-image: url("../../images/background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+header.help-header{
+    width: 100vw;
+    height: fit-content;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    grid-template-rows: auto;
+    grid-template-columns: repeat(8, auto);
+}
+
+h1{
+    color: var(--yellow);
+    font-size: 3em;
+    grid-column: 3 / 4;
+}
+
+div.options-bar{
+    width: 100vw;
+    height: 10vh;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(135, 206, 250, 0.3);
+}
+
+div.option{
+    width: 25vw;
+    height: 10vh;
+    padding: 2vh 5vw;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(135, 206, 250, 0.3);
+}
+
+div.option:hover{
+    background-color: rgba(135, 206, 250, 0.6);
+}
+
+div.clicked{
+    background-color: rgba(135, 206, 250, 0.6);
+}
+
+div.outlet-container{
+    height: 85vh;
+    width: 100vw;
+}
+
+.link{
+    text-decoration-line: none;
+    color: var(--green);
+}
+
+.link:hover{
+    color: var(--magenta);
+}
+
+div.clicked > .link {
+    color: var(--magenta);
+}
+
+.home-link{
+    background-color: rgba(0, 0, 139, 0.4);
+    padding: 1vh 1vw;
+    color: var(--green);
+    grid-column: 1 / 2
+}

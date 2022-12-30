@@ -1,0 +1,98 @@
+*, *::before, *::after{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div.leaderboard-main{
+    width: 100vw;
+    height: 100vh;
+    background-image: url("../../images/background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+header.leaderboard-header{
+    width: 100vw;
+    height: 15vh;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+table.leaderboard{
+    width: 90vw;
+    height: 75vh;
+    background-color: rgba(135, 206, 250, 0.4);
+}
+
+table.leaderboard > thead th{
+    background-color: rgba(0, 0, 139, 0.5);
+    color: var(--orange);
+    font-size: 1.25em;
+}
+
+table.leaderboard > tbody tr:nth-child(1) td,
+table.leaderboard > tbody tr:nth-child(2) td,
+table.leaderboard > tbody tr:nth-child(3) td{
+    background: transparent;
+}
+
+table.leaderboard > tbody td{
+    background-color: rgba(139, 0, 139, 0.5);
+    color: var(--orange);
+    text-align: center;
+    font-size: 1.25em;
+}
+
+table.leaderboard > tbody tr:nth-child(1){
+    background-color: rgba(220, 20, 60, 0.5);
+    font-weight: bold;
+    font-size: 1.25em;
+}
+
+table.leaderboard > tbody tr:nth-child(1) td{
+    color: var(--yellow);
+}
+
+table.leaderboard > tbody tr:nth-child(2){
+    background-color: rgba(255, 165, 0, 0.5);
+    font-weight: bold;
+    color: var(--magenta);
+    font-size: 1.25em;
+}
+
+table.leaderboard > tbody tr:nth-child(2) td{
+    color: var(--magenta);
+}
+
+table.leaderboard > tbody tr:nth-child(3){
+    background-color: rgba(255, 255, 0, 0.5);
+    font-weight: bold;
+    font-size: 1.25em;
+}
+
+table.leaderboard > tbody tr:nth-child(3) td{
+    color: var(--magenta);
+}
+
+.leaderboard-game-link{
+    background-color: rgba(135, 206, 250, 0.6);
+    color: var(--orange);
+    padding: 1vh 1vw;
+    width: fit-content;
+}
+
+.leaderboard-game-link:hover{
+    font-weight: bold;
+}

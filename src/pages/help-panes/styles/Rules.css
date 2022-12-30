@@ -1,0 +1,60 @@
+div.pane-main-rules{
+    background-color: rgba(135, 206, 250, 0.6);
+    width: 100vw;
+    height: 85vh;
+    display: grid;
+    grid-template-rows: repeat(5, auto);
+    grid-template-columns: repeat(5, auto);
+    align-items: center;
+    justify-items: center;
+    row-gap: 1vh;
+    column-gap: 2vw;
+}
+
+div.pane-main-rules > div{
+    background-color: rgba(135, 206, 250, 0.8);
+    color: var(--dark-blue);
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 1vh 1vw;
+}
+
+div.general{
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+}
+
+div.points{
+    grid-column: 2 / 5;
+    grid-row: 1 / 3;
+}
+
+div.points ul{
+    padding: 0 0;
+    display: flex;
+    flex-flow: row nowrap;
+    width: 80%;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+div.points ul li{
+    padding: 0 0;
+    font-size: 1em;
+}
+
+div.tetrominos{
+    grid-row: 3 / 5;
+    grid-column: 2 / 5;
+}
+
+div.time{
+    grid-column: 1 / 2;
+    grid-row: 3 / 5;
+}
+
+p{
+    padding: 1vh 1vw;
+}
