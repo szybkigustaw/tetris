@@ -61,7 +61,7 @@ footer{
     display: flex;
     flex-flow: row wrap;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-between;
     color: var(--green);
 }
 

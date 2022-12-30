@@ -25,7 +25,7 @@ class Home extends React.Component{
                 </div>
                 <div className="spacer" />
                 <footer>
-                    <p>Prawa autorskie do logotypu TETRIS należą do 
+                    <p>Prawa autorskie do logotypu TETRIS oraz konceptu gry należą do 
                         <a href="https://tetris.com/">
                             &nbsp; The Tetris Company.
                         </a>

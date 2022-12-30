@@ -34,7 +34,7 @@ header.help-header{
 h1{
     color: var(--yellow);
     font-size: 3em;
-    grid-column: 3 / 4;
+    grid-column: 4 / 5;
 }
 
 div.options-bar{

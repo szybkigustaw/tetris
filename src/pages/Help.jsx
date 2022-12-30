@@ -58,7 +58,15 @@ const Help = (props) => {
                 </div>
             </div>
             <div className="outlet-container">
-                <Outlet />
+                { clicked === null ?
+                    <h2
+                        style={{textAlign: 'center', marginTop: '25vh'}}
+                    >
+                        Wybierz dowolną opcję, aby wyświetlić kartę pomocy
+                    </h2>
+                    :
+                    <Outlet />
+                }
             </div>
         </div>
     );

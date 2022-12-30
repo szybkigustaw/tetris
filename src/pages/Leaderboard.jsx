@@ -59,13 +59,22 @@ const Leaderboard = (props) => {
                         ))}
                     </tbody>
                 </table>
+                <span className="leaderboard-button-bar">
                 <Link
                     role="button"
-                    className="leaderborad-game-link"
+                    className="leaderboard-game-link"
                     to="/game"
                 >
                     Zagraj jeszcze raz!
                 </Link>
+                <Link
+                    role="button"
+                    className='leaderboard-game-link'
+                    to="/"
+                >
+                    Do Menu Głównego
+                </Link>
+                </span>
             </div>
         );
     };
