@@ -25,8 +25,8 @@ class DisplayHold extends React.Component{
             <StyledDisplayHold>
                 W przechowaniu: {
                     (this.props.held_tetromino === null) ? 
-                    <HoldMatrix stage={blank_stage} /> :
-                    <HoldMatrix stage={this.props.held_tetromino} />                  
+                    <HoldMatrix matrix={blank_stage} /> :
+                    <HoldMatrix matrix={this.props.held_tetromino} />                  
                 }
             </StyledDisplayHold>
         );

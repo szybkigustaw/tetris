@@ -1,7 +1,9 @@
 /*
-    StyledHoldMatrix - komponent zagnieżdżony wewnątrz komponentu HoldMatrix, odpowiedzialny za renderowanie stylizowanego komponentu. 
-    Komponent ten przyjmuje w parametrach długość oraz wysokość macierzy i tworzy na ich podstawie stylizowaną macierz
-    służącą do umieszczenia przechowywanego Tetromina.
+    StyledHoldMatrix - komponent zagnieżdżony wewnątrz komponentu HoldMatrix, 
+    odpowiedzialny za renderowanie stylizowanego komponentu. Komponent ten 
+    przyjmuje w parametrach długość oraz wysokość macierzy i tworzy na ich 
+    podstawie stylizowaną macierz służącą do umieszczenia przechowywanego 
+    Tetromina.
 */
 
 import styled from "styled-components";

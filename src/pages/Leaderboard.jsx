@@ -46,9 +46,6 @@ const Leaderboard = (props) => {
     const store = useStore();
     const data = sortData(store.getState());
 
-    console.log(data);
-    console.log(data.length);
-
         return(
             <div className="leaderboard-main">
             <header className="leaderboard-header">

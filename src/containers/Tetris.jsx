@@ -148,7 +148,9 @@ class Tetris extends React.Component{
 
         /* Tworzymy zmienną przechowującą dwuwymiarową tablicę - naszą macierz */
         const stage = Array.from(Array(this.STAGE_HEIGHT), () => (
-            new Array(this.STAGE_WIDTH).fill(['0', 'clear']) //Wypełniamy ją komórkami pustymi (brak złączenia z macierzą, brak elementu na nich)
+
+            //Wypełniamy ją komórkami pustymi (brak złączenia z macierzą, brak elementu na nich)
+            new Array(this.STAGE_WIDTH).fill(['0', 'clear']) 
         ));
 
         //Zwrócenie gotowej macierzy
@@ -177,7 +179,8 @@ class Tetris extends React.Component{
         if(prevState.player.pos !== this.state.player.pos){
         
 
-        //Dokonaj zcalenia komórek, które zcalone być powinny z macierzą i dokonaj jej ponownego wyrenderowania (bez uwzględnienia gracza)
+        //Dokonaj zcalenia komórek, które zcalone być powinny z macierzą i dokonaj jej ponownego 
+        //wyrenderowania (bez uwzględnienia gracza)
         const newStage = this.state.stage.map((row) => 
             row.map((cell) => (
              cell[1] === 'clear' ? ['0', 'clear'] : cell   
@@ -190,7 +193,9 @@ class Tetris extends React.Component{
                 if(value !== '0'){
                     newStage[y + this.state.player.pos.y][x + this.state.player.pos.x] = [
                         value,
-                        `${this.state.player.collided ? 'merged' : 'clear'}` //Sprawdzanie, czy element powinien przy następnym renderze zostać scalony z macierzą
+
+                        //Sprawdzanie, czy element powinien przy następnym renderze zostać scalony z macierzą
+                        `${this.state.player.collided ? 'merged' : 'clear'}` 
                     ];
                 }
             })
@@ -354,7 +359,7 @@ class Tetris extends React.Component{
 
     //Metoda odpowiedzialna za podmienianie Tetromina
     //aktualnego z przechowywanym
-    switchHold(player, stage){
+    switchHold(player){
 
         //Jeśli gra nie jest skończona
         if(!this.state.gameOver){

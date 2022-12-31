@@ -1,5 +1,6 @@
 /*
-    Rules - komponent reprezentujący "szybę" wmontowywaną w stronę Help. Zawiera informacje o zasadach gry.
+    Rules - komponent reprezentujący "szybę" wmontowywaną w stronę Help. 
+    Zawiera informacje o zasadach gry.
  */
 
 import React from "react";

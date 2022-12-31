@@ -1,6 +1,6 @@
 /**
-    TechStack - komponent reprezentujący "szybę" wmontowywaną do strony Help. Zawiera informacje o zastosowanych
-    technologiach w procesie tworzenia strony.
+    TechStack - komponent reprezentujący "szybę" wmontowywaną do strony Help. 
+    Zawiera informacje o zastosowanych technologiach w procesie tworzenia strony.
  */
 
 import React from "react";

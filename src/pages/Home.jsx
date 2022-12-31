@@ -1,6 +1,7 @@
 /*
-    Home - komponent reprezentujący stronę główną. Zawiera logo TETRIS, panel z przyciskami odproawdzającymi poprzez
-    React Routera do innych podstron oraz stopkę z informacjami o prawach autorskich podmiotów,
+    Home - komponent reprezentujący stronę główną. Zawiera logo TETRIS, 
+    panel z przyciskami odproawdzającymi poprzez React Routera do innych 
+    podstron oraz stopkę z informacjami o prawach autorskich podmiotów,
 */
 
 import React from "react";

@@ -1,5 +1,6 @@
 /*
-    Credits - komponent reprezentujący "szybę" wmontowywaną w stronę Help. Zawiera informacje o autorze oraz źródłach
+    Credits - komponent reprezentujący "szybę" wmontowywaną w stronę Help. 
+    Zawiera informacje o autorze oraz źródłach
 */
 
 import React from "react";

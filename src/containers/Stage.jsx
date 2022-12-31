@@ -1,7 +1,7 @@
 /*
     Stage - komponent-kontener odpowiedzialny za renderowanie macierzy z komórkami.
     Jako własności przyjmuje informacje o stanie poszczególnych komórek.
-    Renderuje macierz, wypełniając ją komponentami Cell, przekazując im dane o ich typie oraz kolorze.
+    Renderuje macierz, wypełniając ją komponentami Cell, przekazując im dane o ich typie.
 */
 
 import React from "react";

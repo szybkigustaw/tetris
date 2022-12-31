@@ -1,7 +1,8 @@
 /*
-    StyledStage - komponent zagnieżdżony wewnątrz komponentu Stage, odpowiedzialny za renderowanie stylizowanego komponentu. 
-    Komponent ten przyjmuje w parametrach długość oraz wysokość sceny (macierzy) i  tworzy na ich podstawie stylizowaną macierz
-    służącą jako pole gry.
+    StyledStage - komponent zagnieżdżony wewnątrz komponentu Stage, 
+    odpowiedzialny za renderowanie stylizowanego komponentu. Komponent 
+    ten przyjmuje w parametrach długość oraz wysokość sceny (macierzy) 
+    i  tworzy na ich podstawie stylizowaną macierz służącą jako pole gry.
 */
 
 import styled from "styled-components";

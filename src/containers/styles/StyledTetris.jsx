@@ -1,10 +1,13 @@
 /*
-    StyledTetris - komponent zagnieżdzony wewnątrz komponentu StyledTetrisWrapper, odpowiedzialny za renderowanie stylizowanego pola gry.
-    Nie przyjmuje własności, tworzy stylizowany komponent zawierający macierz komórek. okna z informacjami oraz przycisk rozpoczęcia gry.
+    StyledTetris - komponent zagnieżdzony wewnątrz komponentu StyledTetrisWrapper, 
+    odpowiedzialny za renderowanie stylizowanego pola gry. Nie przyjmuje własności, 
+    tworzy stylizowany komponent zawierający macierz komórek. okna z informacjami 
+    oraz przycisk rozpoczęcia gry.
 
-    StyledTetrisWrapper - komponent zagnieżdżony wewnątrz komponentu Tetris, odpowiedzialny za stworzenie otoczki wokół pola gry.
-    Jako własność przyjmuje funkcję zwrotną odpowiedzialną za rejestrowanie naciśnięć klawiszy na klawiaturze (patrz. Tetris.jsx). 
-    Stylizuje wyłącznie tło za polem gry. 
+    StyledTetrisWrapper - komponent zagnieżdżony wewnątrz komponentu Tetris, 
+    odpowiedzialny za stworzenie otoczki wokół pola gry. Jako własność przyjmuje 
+    funkcję zwrotną odpowiedzialną za rejestrowanie naciśnięć klawiszy na klawiaturze 
+    (patrz. Tetris.jsx). Stylizuje wyłącznie tło za polem gry. 
 */
 import styled from "styled-components";
 
