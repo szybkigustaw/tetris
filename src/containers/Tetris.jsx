@@ -350,10 +350,10 @@ class Tetris extends React.Component{
         if(rows_cleared >= required_to_level){
             level++; //Zwiększ poziom
             req = required_to_level + (5 * level); //Zwiększ pułap o (nowy poziom * 5)
-            drop_time = level <= 8 ? (drop_time / 2) : (drop_time * 0.4) //Zmniejsz interwał zgodnie z poziomem
+            drop_time = level <= 8 ? (drop_time * 0.65) : (drop_time * 0.55) //Zmniejsz interwał zgodnie z poziomem
             /*
-                1-8 poziom: obecny interwał dzielony na 2
-                9^ poziom: 40% obecnego interwału
+                1-8 poziom: 65% obecnego interwału
+                9^ poziom: 55% obecnego interwału
              */
         }
 
