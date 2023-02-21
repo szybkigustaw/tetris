@@ -75,7 +75,7 @@ const Leaderboard = (props) => {
                                 <td>{data_row.player_name}</td>
                                 <td>{data_row.rows_cleared}</td>
                                 <td>{data_row.level}</td>
-                                <td>{transformTime(data_row.time)}</td>
+                                <td>{transformTime(Math.round(data_row.time))}</td>
                                 <td colSpan={2}>{data_row.points}</td>
                             </tr>
                         ))

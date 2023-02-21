@@ -19,6 +19,7 @@ class Cell extends React.Component{
             <StyledCell 
                 type={this.props.type}
                 color={TETROMINOS[this.props.type].color}
+				state={this.props.state}
             />
         );
     };

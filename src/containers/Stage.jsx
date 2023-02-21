@@ -18,7 +18,7 @@ class Stage extends React.Component{
         return(
             <StyledStage height={stage.length} width={stage[0].length}>
                 {stage.map(row => row.map((cell, x) => (
-                    <Cell key={x} type={cell[0]} />
+                    <Cell key={x} type={cell[0]} state={cell[1]} />
                 )))}
             </StyledStage>
         );
