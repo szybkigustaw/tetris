@@ -10,6 +10,7 @@ import { React, useState } from "react";
 import Display from "../components/Display";
 import { useLocation, Navigate } from "react-router";
 import { useStore } from "react-redux";
+import { transformTime } from "../utils/formatters";
 import './styles/GameResult.css';
 
 //Funkcja zapisuje dane o wynikach w kontenerze Redux.
@@ -50,7 +51,7 @@ const GameResult = props => {
         <div className="results">
             <Display text={`Wiersze wyczyszczone: ${location.state.score.rows_cleared}`}/>
             <Display text={`Poziom: ${location.state.score.level}`}/>
-            <Display text={`Czas: ${location.state.score.time}`}/>
+            <Display text={`Czas: ${transformTime(Math.round(location.state.score.time))}`}/>
             <Display text={`Wynik: ${location.state.score.points}`}/>
         </div>
 
