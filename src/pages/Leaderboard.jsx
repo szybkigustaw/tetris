@@ -7,6 +7,7 @@
 import React from 'react';
 import { useStore } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { transformTime } from '../utils/formatters';
 import "./styles/Leaderboard.css";
 
 //Funkcja sortuje dane w kolejności od największej do najmniejszej
@@ -74,7 +75,7 @@ const Leaderboard = (props) => {
                                 <td>{data_row.player_name}</td>
                                 <td>{data_row.rows_cleared}</td>
                                 <td>{data_row.level}</td>
-                                <td>{data_row.time}</td>
+                                <td>{transformTime(data_row.time)}</td>
                                 <td colSpan={2}>{data_row.points}</td>
                             </tr>
                         ))

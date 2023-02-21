@@ -14,6 +14,7 @@ import React from "react";
 import Stage from "./Stage";
 import Display from "../components/Display";
 import DisplayHold from "../components/DisplayHold";
+import { transformTime } from "../utils/formatters"; 
 import { TETROMINOS } from "../utils/tetrominos";
 import { StyledTetris, StyledTetrisWrapper } from "./styles/StyledTetris";
 import { Navigate } from "react-router";
@@ -367,10 +368,10 @@ class Tetris extends React.Component{
         if(rows_cleared >= required_to_level){
             level++; //Zwiększ poziom
             req = required_to_level + (5 * level); //Zwiększ pułap o (nowy poziom * 5)
-            drop_time = level <= 8 ? (drop_time * 0.65) : (drop_time * 0.55) //Zmniejsz interwał zgodnie z poziomem
+            drop_time = level <= 8 ? (drop_time * 0.5) : (drop_time * 0.35) //Zmniejsz interwał zgodnie z poziomem
             /*
-                1-8 poziom: 65% obecnego interwału
-                9^ poziom: 55% obecnego interwału
+                1-8 poziom: 50% obecnego interwału
+                9^ poziom: 35% obecnego interwału
              */
         }
 
@@ -870,7 +871,7 @@ class Tetris extends React.Component{
                         <Display text={`Wiersze: ${this.state.rows_cleared}`} />
                         <Display text={`Poziom: ${this.state.level}`} /> 
                         <Display text={`Do następnego ${this.state.required_to_level - this.state.rows_cleared}`} />
-                        <Display text={`Czas: ${parseInt(this.state.playtime)}`} />
+                        <Display text={`Czas: ${transformTime(parseInt(this.state.playtime))}`} />
                         <DisplayHold held_tetromino={this.state.held_tetromino} />
                     </div>
                 </aside>
