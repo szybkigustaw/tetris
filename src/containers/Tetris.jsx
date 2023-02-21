@@ -411,12 +411,15 @@ class Tetris extends React.Component{
             //Jeśli obecnie nie przechowujemy żadnego Tetromina
             if(this.state.held_tetromino === null){
 
+				const cur_tetromino = this.state.player.tetromino;
+				this.resetPlayer();
+
                 //Zaktualizuj stan gry
                 this.setState(prevState => ({
                     random_bag: prevState.random_bag,
-                    player: this.resetPlayer(), //Zresetuj pozycję gracza
+                    player: prevState.player, //Zresetuj pozycję gracza
                     stage: prevState.stage,
-                    held_tetromino: prevState.player.tetromino, //Przypisz kontrolowane Tetromino
+                    held_tetromino: cur_tetromino, //Przypisz kontrolowane Tetromino
 				    next_tetromino: prevState.next_tetromino,
                     can_be_switched: prevState.can_be_switched, //Poprzedni stan = false
                     drop_time: prevState.drop_time,
