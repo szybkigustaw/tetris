@@ -804,9 +804,7 @@ class Tetris extends React.Component{
             required_to_level: prevState.required_to_level
         }));
 
-        console.log(this.state.pause);
-
-        
+		document.querySelector("div.game-wrapper").focus(); //Złap "fokusa" na Wrapperze obszaru gry
     }
 
     //Metoda rejestrująca naciśnięcia klawiszy i interpretująca je na
