@@ -198,7 +198,7 @@ class Tetris extends React.Component{
         //wyrenderowania (bez uwzględnienia gracza)
         const newStage = this.state.stage.map((row) => 
             row.map((cell) => (
-             cell[1] === 'clear' ? ['0', 'clear'] : cell   
+				(cell[1] === 'clear' || cell[1] === 'ghost') ? ['0', 'clear'] : cell   
             ))
         );
 
@@ -215,6 +215,25 @@ class Tetris extends React.Component{
                 }
             })
         ))
+
+		const player_ghost = JSON.parse(JSON.stringify(this.state.player));
+		let add_pos_y = 0;
+		while(!(this.checkCollision(player_ghost, newStage, { x: 0, y: add_pos_y } ))){
+				add_pos_y += 1;
+		}
+		player_ghost.pos = {x: player_ghost.pos.x, y: player_ghost.pos.y + add_pos_y};
+		player_ghost.tetromino.forEach((row, y) => (
+				row.forEach((value, x) => {
+						if(
+								value !== '0' &&
+								newStage[y + player_ghost.pos.y - 1][x + player_ghost.pos.x][0] === '0' &&
+								newStage[y + this.state.player.pos.y][x + this.state.player.pos.x][1] !== 'merged'
+						){
+								newStage[y + player_ghost.pos.y - 1][x + player_ghost.pos.x] = [
+								value, 'ghost' ];
+						}
+				})
+		));
 
         //Jeśli gracz koliduje (osiągnął spód sceny)
         if(this.state.player.collided){
@@ -317,8 +336,11 @@ class Tetris extends React.Component{
                             !stage[y + player.pos.y + moveY][x + player.pos.x + moveX] || 
 
                             //Sprawdzamy, czy komórka, którą chcemy przesunąć nie jest złączona
-                            stage[y + player.pos.y + moveY][x + player.pos.x + moveX][1] !== 'clear'
-                        ){
+                            (
+									stage[y + player.pos.y + moveY][x + player.pos.x + moveX][1] !== 'clear' && 
+								    stage[y + player.pos.y + moveY][x + player.pos.x + moveX][1] !== 'ghost'
+							)
+						){
                             return true;
                         } 
                     }
@@ -890,6 +912,8 @@ class Tetris extends React.Component{
 
     //Wyrenderuj komponent
     render(){
+
+		let left_to_level = this.state.required_to_level - this.state.rows_cleared;
         return(
             <StyledTetrisWrapper
                 role="button"
@@ -905,7 +929,7 @@ class Tetris extends React.Component{
                         <Display text={`Wynik: ${this.state.points}`} />
                         <Display text={`Wiersze: ${this.state.rows_cleared}`} />
                         <Display text={`Poziom: ${this.state.level}`} /> 
-                        <Display text={`Do następnego ${this.state.required_to_level - this.state.rows_cleared}`} />
+                        <Display text={`Do następnego: ${left_to_level} ${left_to_level > 4 ? 'wierszy' : (left_to_level > 1 ? 'wiersze' : 'wiersz')}`} />
                         <Display text={`Czas: ${transformTime(parseInt(this.state.playtime))}`} />
 						<DisplayHold title={"Następny"} held_tetromino={this.state.next_tetromino} />
 						<DisplayHold title={"W przechowaniu"} held_tetromino={this.state.held_tetromino} />

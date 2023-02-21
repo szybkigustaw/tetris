@@ -5,8 +5,11 @@
 import styled from "styled-components";
 
 export const StyledDisplay = styled.div`
-    width: 100%;
-    max-width: 15vw;
+    display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	width: 100%;
+    max-width: 25vw;
     padding: 2vh 2vw;
     text-align: center;
     margin: 10px 0;

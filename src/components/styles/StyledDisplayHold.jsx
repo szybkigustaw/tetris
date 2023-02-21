@@ -11,9 +11,9 @@ export const StyledDisplayHold = styled.div`
     justify-content: center;
     width: 100%;
     max-width: 15vw;
-    padding: 1vh 1vw;
+    padding: 0.5vh 0.5vw;
     text-align: center;
-    margin: 10px 0;
+    margin: 5px 0;
     border: 2px solid white;
     border-radius: 30px;
     color: white;
