@@ -14,6 +14,7 @@ import React from "react";
 import Stage from "./Stage";
 import Display from "../components/Display";
 import DisplayHold from "../components/DisplayHold";
+import { transformTime } from "../utils/formatters"; 
 import { TETROMINOS } from "../utils/tetrominos";
 import { StyledTetris, StyledTetrisWrapper } from "./styles/StyledTetris";
 import { Navigate } from "react-router";
@@ -134,10 +135,6 @@ class Tetris extends React.Component{
 
         //ZEGARY WEWNĘTRZNE
 
-        //Zegar odpowiedzialny za kontrolowanie samoczynnego
-        //opadu Tetromina
-        this.gameInterval = null;
-
         //Zegar odpowiedzialny za naliczanie czasu gry
         this.timer = null;
     };
@@ -168,7 +165,6 @@ class Tetris extends React.Component{
 
         //Jeśli gra jest skończona lub spauzowana - zatrzymaj zegary gry
         if(this.state.gameOver){
-            clearInterval(this.gameInterval);
             clearInterval(this.timer);
         };
 
@@ -254,6 +250,28 @@ class Tetris extends React.Component{
                     required_to_level: prevState.required_to_level
                 })); 
     }
+
+		//Zresetuj interwał
+		clearInterval(this.timer);
+
+		//Ustaw interwał zwiększający czas gry o 1 co sekundę
+        this.timer = setInterval(() => {
+            if(!(this.state.pause || this.state.gameOver)){
+		    this.drop();
+            this.setState(prevState => ({
+            player: prevState.player,
+            random_bag: prevState.random_bag,
+            stage: prevState.stage,
+            held_tetromino: prevState.held_tetromino,
+            drop_time: prevState.drop_time,
+            playtime: prevState.playtime + (prevState.drop_time / 1000),
+            gameOver: prevState.gameOver,
+            pause: prevState.pause,
+            rows_cleared: prevState.rows_cleared,
+            points: prevState.points,
+            level: prevState.level,
+            required_to_level: prevState.required_to_level
+        }))}}, this.state.drop_time);
     }
 
     //Metoda sprawdzająca kolizję aktualnego Tetromina ze sceną / 
@@ -350,10 +368,10 @@ class Tetris extends React.Component{
         if(rows_cleared >= required_to_level){
             level++; //Zwiększ poziom
             req = required_to_level + (5 * level); //Zwiększ pułap o (nowy poziom * 5)
-            drop_time = level <= 8 ? (drop_time / 2) : (drop_time * 0.4) //Zmniejsz interwał zgodnie z poziomem
+            drop_time = level <= 8 ? (drop_time * 0.5) : (drop_time * 0.35) //Zmniejsz interwał zgodnie z poziomem
             /*
-                1-8 poziom: obecny interwał dzielony na 2
-                9^ poziom: 40% obecnego interwału
+                1-8 poziom: 50% obecnego interwału
+                9^ poziom: 35% obecnego interwału
              */
         }
 
@@ -540,6 +558,8 @@ class Tetris extends React.Component{
         //Jeśli nie dochodzi do kolizi:
         if(!this.checkCollision(this.state.player, this.state.stage, {x: 0, y: 1})){
 
+		console.log(`dropped, time: ${this.state.playtime}`);
+
             //Zaktualizuj stan gry
             this.setState(prevState => ({
                     random_bag: prevState.random_bag,
@@ -713,26 +733,24 @@ class Tetris extends React.Component{
             required_to_level: 5
         }));
 
-        //Ustaw zegar odmierzający interwały opadu Tetromina
-        this.gameInterval = setInterval(() => { if(!(this.state.gameOver || this.state.pause)) this.drop() }, this.state.drop_time);
-
         //Ustaw interwał zwiększający czas gry o 1 co sekundę
         this.timer = setInterval(() => {
-            if(!(this.state.pause)){
+            if(!(this.state.pause || this.state.gameOver)){
+		    this.drop();
             this.setState(prevState => ({
             player: prevState.player,
             random_bag: prevState.random_bag,
             stage: prevState.stage,
             held_tetromino: prevState.held_tetromino,
             drop_time: prevState.drop_time,
-            playtime: prevState.playtime + 1,
+            playtime: prevState.playtime + (prevState.drop_time / 1000),
             gameOver: prevState.gameOver,
             pause: prevState.pause,
             rows_cleared: prevState.rows_cleared,
             points: prevState.points,
             level: prevState.level,
             required_to_level: prevState.required_to_level
-        }))}}, 1000);
+        }))}}, this.state.drop_time);
     }
 
     //Metoda odpowiedzialna za resetowanie stanu gry
@@ -786,9 +804,7 @@ class Tetris extends React.Component{
             required_to_level: prevState.required_to_level
         }));
 
-        console.log(this.state.pause);
-
-        
+		document.querySelector("div.game-wrapper").focus(); //Złap "fokusa" na Wrapperze obszaru gry
     }
 
     //Metoda rejestrująca naciśnięcia klawiszy i interpretująca je na
@@ -853,7 +869,7 @@ class Tetris extends React.Component{
                         <Display text={`Wiersze: ${this.state.rows_cleared}`} />
                         <Display text={`Poziom: ${this.state.level}`} /> 
                         <Display text={`Do następnego ${this.state.required_to_level - this.state.rows_cleared}`} />
-                        <Display text={`Czas: ${this.state.playtime}`} />
+                        <Display text={`Czas: ${transformTime(parseInt(this.state.playtime))}`} />
                         <DisplayHold held_tetromino={this.state.held_tetromino} />
                     </div>
                 </aside>
