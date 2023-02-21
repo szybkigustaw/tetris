@@ -44,6 +44,9 @@ class Tetris extends React.Component{
             //Aktualnie przechowywane Tetromino
             held_tetromino: null,
 
+		    //Następne w kolejności Tetromino
+		    next_tetromino: null,
+
             //Zmienna kontrolna - gwarantuje możliwość tylko jednokrotnej 
             //podmiany Tetromina przed jego opuszczeniem
             can_be_switched: true,
@@ -156,6 +159,22 @@ class Tetris extends React.Component{
 
     //Metoda cyklu życia komponentu - wywoływana w momencie "zamontowania" komponentu w drzewie DOM Reacta
     componentDidMount(){
+		const drawResult = this.drawFromBag(this.state.random_bag);
+		this.setState(prevState => ({
+				player: prevState.player,
+				stage: prevState.stage,
+				random_bag: drawResult[1],
+				held_tetromino: prevState.held_tetromino,
+				next_tetromino: drawResult[0].shape,
+				drop_time: prevState.drop_time,
+				playtime: prevState.playtime,
+				gameOver: prevState.gameOver,
+				pause: prevState.pause, 
+				rows_cleared: prevState.rows_cleared,
+				points: prevState.points,
+				level: prevState.level,
+				required_to_level: prevState.required_to_level			
+		}));
         this.resetGame(); //Zresetuj stan gry
         document.querySelector("div.game-wrapper").focus(); //Złap "fokusa" na Wrapperze obszaru gry
     }
@@ -218,6 +237,7 @@ class Tetris extends React.Component{
                 player: this.state.player,
                 stage: clearRowsRes[0], //Przypisz zredukowaną scenę
                 held_tetromino: prevState.held_tetromino,
+				next_tetromino: this.state.next_tetromino,
                 can_be_switched: true, //Przełącz zmienną - już można podmienić Tetromino
                 drop_time: checkLevelRes[2], //Przypisz nowy interwał
                 playtime: prevState.playtime,
@@ -239,6 +259,7 @@ class Tetris extends React.Component{
                     player: this.state.player,
                     stage: newStage,
                     held_tetromino: prevState.held_tetromino,
+					next_tetromino: this.state.next_tetromino,
                     can_be_switched: prevState.can_be_switched,
                     drop_time: prevState.drop_time,
                     playtime: prevState.playtime,
@@ -263,6 +284,7 @@ class Tetris extends React.Component{
             random_bag: prevState.random_bag,
             stage: prevState.stage,
             held_tetromino: prevState.held_tetromino,
+		    next_tetromino: prevState.next_tetromino,
             drop_time: prevState.drop_time,
             playtime: prevState.playtime + (prevState.drop_time / 1000),
             gameOver: prevState.gameOver,
@@ -395,6 +417,7 @@ class Tetris extends React.Component{
                     player: this.resetPlayer(), //Zresetuj pozycję gracza
                     stage: prevState.stage,
                     held_tetromino: prevState.player.tetromino, //Przypisz kontrolowane Tetromino
+				    next_tetromino: prevState.next_tetromino,
                     can_be_switched: prevState.can_be_switched, //Poprzedni stan = false
                     drop_time: prevState.drop_time,
                     playtime: prevState.playtime,
@@ -428,6 +451,7 @@ class Tetris extends React.Component{
                     },
                     stage: prevState.stage,
                     held_tetromino: cur_tetromino, //Przypisz poprzednio kontrolowane tetromino
+				    next_tetromino: prevState.next_tetromino,
                     can_be_switched: false, //Przełącz zmienną - nie można już dokonać podmiany
                     drop_time: prevState.drop_time,
                     playtime: prevState.playtime,
@@ -503,6 +527,7 @@ class Tetris extends React.Component{
             player: player_copy, //Zaktualizuj stan gracza
             stage: prevState.stage,
             held_tetromino: prevState.held_tetromino,
+		    next_tetromino: prevState.next_tetromino,
             drop_time: prevState.drop_time,
             playtime: prevState.playtime,
             gameOver: prevState.gameOver,
@@ -529,6 +554,7 @@ class Tetris extends React.Component{
                     random_bag: prevState.random_bag,
                     stage: prevState.stage,
                     held_tetromino: prevState.held_tetromino,
+				    next_tetromino: prevState.next_tetromino,
                     drop_time: prevState.drop_time,
                     playtime: prevState.playtime,
                     gameOver: prevState.gameOver,
@@ -565,6 +591,7 @@ class Tetris extends React.Component{
                     random_bag: prevState.random_bag,
                     stage: prevState.stage,
                     held_tetromino: prevState.held_tetromino,
+					next_tetromino: prevState.next_tetromino,
                     drop_time: prevState.drop_time,
                     playtime: prevState.playtime,
                     gameOver: prevState.gameOver,
@@ -594,6 +621,7 @@ class Tetris extends React.Component{
                         player: prevState.player,
                         stage: prevState.stage,
                         held_tetromino: prevState.held_tetromino,
+						next_tetromino: prevState.next_tetromino,
                         drop_time: prevState.drop_time,
                         playtime: prevState.playtime,
                         gameOver: true, //Przełącz zmienną - gra się kończy
@@ -612,6 +640,7 @@ class Tetris extends React.Component{
                         random_bag: prevState.random_bag,
                         stage: prevState.stage,
                         held_tetromino: prevState.held_tetromino,
+						next_tetromino: prevState.next_tetromino,
                         can_be_switched: prevState.can_be_switched,
                         drop_time: prevState.drop_time,
                         playtime: prevState.playtime,
@@ -658,6 +687,7 @@ class Tetris extends React.Component{
             },
             stage: prevState.stage,
             held_tetromino: prevState.held_tetromino,
+		    next_tetromino: prevState.next_tetromino,
             can_be_switched: prevState.can_be_switched,
             drop_time: prevState.drop_time,
             playtime: prevState.playtime,
@@ -706,7 +736,7 @@ class Tetris extends React.Component{
     //Metoda odpowiedzialna za resetowanie stanu gry
     resetGame(){
 
-        //Poierz Tetromino z worka
+        //Poierz Tetromina z worka
         const drawResult = this.drawFromBag(this.state.random_bag);
 
         //Przypisz nowy stan gry
@@ -716,13 +746,14 @@ class Tetris extends React.Component{
             //Nowy san gracza
             player: { 
                 pos: {x: this.STAGE_WIDTH / 2 - 2, y: 0},
-                tetromino: drawResult[0].shape,
+                tetromino: prevState.next_tetromino,
                 collided: false
             },
 
             //I wartości startowe pozostałych pól stanowych
             stage: this.createStage(),
             held_tetromino: null,
+		    next_tetromino: drawResult[0].shape,
             drop_time: 1000,
             playtime: 0,
             gameOver: false,
@@ -742,6 +773,7 @@ class Tetris extends React.Component{
             random_bag: prevState.random_bag,
             stage: prevState.stage,
             held_tetromino: prevState.held_tetromino,
+		    next_tetromino: prevState.next_tetromino,
             drop_time: prevState.drop_time,
             playtime: prevState.playtime + (prevState.drop_time / 1000),
             gameOver: prevState.gameOver,
@@ -766,13 +798,14 @@ class Tetris extends React.Component{
             //Nowy stab gracza
             player: {
                 pos: {x: this.STAGE_WIDTH / 2 - 2, y: 0},
-                tetromino: drawResult[0].shape,
+                tetromino: prevState.next_tetromino,
                 collided: false
             },
 
             //Reszta pozostaje bez zmian
             stage: prevState.stage,
             held_tetromino: prevState.held_tetromino,
+		    next_tetromino: drawResult[0].shape,
             drop_time: prevState.drop_time,
             playtime: prevState.playtime,
             gameOver: false,
@@ -794,6 +827,7 @@ class Tetris extends React.Component{
             stage: prevState.stage,
             random_bag: prevState.random_bag,
             held_tetromino: prevState.held_tetromino,
+		    next_tetromino: prevState.next_tetromino,
             drop_time: prevState.drop_time,
             playtime: prevState.playtime,
             gameOver: prevState.gameOver,
@@ -870,7 +904,8 @@ class Tetris extends React.Component{
                         <Display text={`Poziom: ${this.state.level}`} /> 
                         <Display text={`Do następnego ${this.state.required_to_level - this.state.rows_cleared}`} />
                         <Display text={`Czas: ${transformTime(parseInt(this.state.playtime))}`} />
-                        <DisplayHold held_tetromino={this.state.held_tetromino} />
+						<DisplayHold title={"Następny"} held_tetromino={this.state.next_tetromino} />
+						<DisplayHold title={"W przechowaniu"} held_tetromino={this.state.held_tetromino} />
                     </div>
                 </aside>
             </StyledTetris>
