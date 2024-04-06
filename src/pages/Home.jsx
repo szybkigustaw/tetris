@@ -9,10 +9,6 @@ import './styles/Home.css';
 import HomeButton from "../components/HomeButton";
 
 class Home extends React.Component{
-    constructor(props){
-        super(props);
-    };
-
     render(){
         return(
             <div className="main">

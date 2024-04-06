@@ -7,10 +7,6 @@ import HoldMatrix from "../containers/HoldMatrix";
 import { StyledDisplayHold } from "./styles/StyledDisplayHold";
 
 class DisplayHold extends React.Component{
-    constructor(props){
-        super(props)
-    };
-
     render(){
 
         //Jeśli nie jest przechowywane żadne Tetromino, stwórz pustą macierz 4x4

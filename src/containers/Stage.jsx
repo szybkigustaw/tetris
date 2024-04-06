@@ -9,10 +9,6 @@ import Cell from "../components/Cell";
 import { StyledStage } from "./styles/StyledStage";
 
 class Stage extends React.Component{
-    constructor(props){
-        super(props)
-    };
-
     render(){
         const stage = this.props.stage;
         return(

@@ -26,7 +26,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-    <BrowserRouter>
+    <BrowserRouter basename='/tetris'>
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/game" element={ <Tetris /> } />

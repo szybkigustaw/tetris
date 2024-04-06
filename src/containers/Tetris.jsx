@@ -140,6 +140,9 @@ class Tetris extends React.Component{
 
         //Zegar odpowiedzialny za naliczanie czasu gry
         this.timer = null;
+
+        this.playtime_timer = null;
+        this.playtime = 0;
     };
 
 
@@ -601,7 +604,9 @@ class Tetris extends React.Component{
     }
 
     //Metoda odpowiedzialna za przesuwanie Tetromina w osi Y
-    drop(){
+    drop(user_drop = false){
+
+        const time_elapsed = user_drop ? 0 : (this.state.drop_time / 1000);
 
         //Jeśli gra nie jest skończona:
        if(!this.state.gameOver){
@@ -618,7 +623,7 @@ class Tetris extends React.Component{
                     held_tetromino: prevState.held_tetromino,
 					next_tetromino: prevState.next_tetromino,
                     drop_time: prevState.drop_time,
-                    playtime: prevState.playtime,
+                    playtime: prevState.playtime + time_elapsed,
                     gameOver: prevState.gameOver,
                     pause: prevState.pause,
                     player: {
@@ -668,7 +673,7 @@ class Tetris extends React.Component{
 						next_tetromino: prevState.next_tetromino,
                         can_be_switched: prevState.can_be_switched,
                         drop_time: prevState.drop_time,
-                        playtime: prevState.playtime,
+                        playtime: prevState.playtime + time_elapsed,
                         gameOver: prevState.gameOver,
                         pause: prevState.pause,
                         player: {
@@ -760,7 +765,6 @@ class Tetris extends React.Component{
 
     //Metoda odpowiedzialna za resetowanie stanu gry
     resetGame(){
-
         //Poierz Tetromina z worka
         const drawResult = this.drawFromBag(this.state.random_bag);
 
@@ -800,7 +804,7 @@ class Tetris extends React.Component{
             held_tetromino: prevState.held_tetromino,
 		    next_tetromino: prevState.next_tetromino,
             drop_time: prevState.drop_time,
-            playtime: prevState.playtime + (prevState.drop_time / 1000),
+            playtime: prevState.playtime,
             gameOver: prevState.gameOver,
             pause: prevState.pause,
             rows_cleared: prevState.rows_cleared,
@@ -876,36 +880,15 @@ class Tetris extends React.Component{
         //Interpretuj naciśnięcia klawiszy na odpowiednie metody 
         //(więcej na stronie Pomocy w zakładce Sterowanie)
         switch(e.code){
-            case "ControlLeft":{
-                this.switchHold(this.state.player, this.state.stage);
-            } break;
-            case "ArrowLeft":{
-                this.move(-1);
-            } break;
-
-            case "ArrowUp":{
-                this.rotatePlayer(1);
-            } break;
-            
-            case "ShiftLeft":{
-                this.rotatePlayer(-1);
-            }  break;
-
-            case "ArrowRight":{
-                this.move(1);
-            } break;
-
-            case "ArrowDown":{
-                this.drop();
-            } break;
-
-            case "Space":{
-                this.hardDrop(this.state.player, this.state.stage);
-            } break;
-
-            case "Escape":{
-                this.switchPause();
-            } break;
+            case "ControlLeft": this.switchHold(this.state.player, this.state.stage); break;
+            case "ArrowLeft": this.move(-1); break;
+            case "ArrowUp": this.rotatePlayer(1); break;
+            case "ShiftLeft": this.rotatePlayer(-1); break;
+            case "ArrowRight": this.move(1); break;
+            case "ArrowDown": this.drop(true); break;
+            case "Space": this.hardDrop(this.state.player, this.state.stage); break;
+            case "Escape": this.switchPause(); break;
+            default: return;
         }
     }
     }

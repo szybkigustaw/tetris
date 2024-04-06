@@ -9,10 +9,6 @@ import { TETROMINOS } from "../utils/tetrominos"; //Pobieramy listę Tetrominów
 import StyledCell from "./styles/StyledCell";
 
 class Cell extends React.Component{
-    constructor(props){
-        super(props)
-    };
-
     render(){
 
         return(

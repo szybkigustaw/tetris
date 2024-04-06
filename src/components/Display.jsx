@@ -6,10 +6,6 @@ import React from "react";
 import { StyledDisplay } from "./styles/StyledDisplay";
 
 class Display extends React.Component{
-    constructor(props){
-        super(props)
-    };
-
     render(){
 
         return(

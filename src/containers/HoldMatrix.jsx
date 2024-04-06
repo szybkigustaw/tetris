@@ -11,10 +11,6 @@ import Cell from "../components/Cell";
 import { StyledHoldMatrix } from "./styles/StyledHoldMatrix";
 
 class HoldMatrix extends React.Component{
-    constructor(props){
-        super(props)
-    };
-
     render(){
         const matrix = this.props.matrix;
         return(
